@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "Dynamic page clipper",
+  "version": "0.0.1",
+  "description": "",
+  "author": "tkrkt",
+  "background": {
+    "scripts": [ "index.js" ],
+    "persistent": false
+  },
+  "browser_action": {
+
+  },
+  "permissions": [
+    "tabs",
+    "tabCapture",
+    "activeTab",
+    "contextMenus"
+  ]
+}
