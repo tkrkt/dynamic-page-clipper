@@ -1,4 +1,4 @@
-let targetTab;
+let target;
 let stream;
 
 const resize = (width, height, callback) => {
@@ -14,7 +14,7 @@ const resize = (width, height, callback) => {
 
 const watchTitle = targetTab => {
   document.title = targetTab.title;
-  chrome.tabs.onUpdated.addListener((tabId, {title}) => {
+  chrome.tabs.onUpdated.addListener((targetTab, {title}) => {
     if (tabId === targetTab.id && title) {
       document.title = title;
     }
@@ -22,17 +22,17 @@ const watchTitle = targetTab => {
 };
 
 const start = () => {
-  if (!targetTab || !stream) return;
+  if (!target || !stream) return;
 
   const video = document.querySelector('video');
   video.src = window.URL.createObjectURL(stream);
 
-  watchTitle(targetTab);
+  watchTitle(target.tab);
 };
 
 
-chrome.runtime.sendMessage({type: 'targetTab'}, tab => {
-  targetTab = tab;
+chrome.runtime.sendMessage({type: 'ready'}, ({tab, rect, page}) => {
+  target = {tab, rect, page};
   start();
 });
 
