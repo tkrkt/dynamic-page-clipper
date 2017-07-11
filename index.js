@@ -28,18 +28,14 @@ chrome.contextMenus.onClicked.addListener(({menuItemId}, tab) => {
 chrome.runtime.onMessage.addListener((message, {tab}) => {
   if (message.type === 'rect') {
     const {rect, page} = message;
-    target = {
-      tab,
-      rect: message.rect,
-      page: message.page
-    };
+    const titleBarHeight = 22; // mac
     chrome.windows.create({
       url: chrome.extension.getURL('popup.html'),
       type: chrome.windows.WindowType.POPUP,
       width: rect.width,
-      height: rect.height + 22, // title bar height
+      height: rect.height + titleBarHeight,
       left: rect.screenX,
-      top: rect.screenY - 22,
+      top: rect.screenY - titleBarHeight,
       focused: false
     }, w => {
       const clipperTab = w.tabs[0];
@@ -50,8 +46,8 @@ chrome.runtime.onMessage.addListener((message, {tab}) => {
         },
         target: {
           tab,
-          rect: message.rect,
-          page: message.page
+          rect,
+          page
         }
       });
     });
