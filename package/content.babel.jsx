@@ -6,7 +6,6 @@ class App extends Component {
     super();
     this.state = {
       press: false,
-      finished: false,
       startX: 0,
       startY: 0,
       currentX: -10,
@@ -18,17 +17,15 @@ class App extends Component {
 
   @bind
   handleMouseDown({clientX, clientY, screenX, screenY}) {
-    if (!this.state.finished) {
-      this.setState({
-        press: true,
-        startX: clientX,
-        startY: clientY,
-        currentX: clientX,
-        currentY: clientY,
-        screenX,
-        screenY
-      });
-    }
+    this.setState({
+      press: true,
+      startX: clientX,
+      startY: clientY,
+      currentX: clientX,
+      currentY: clientY,
+      screenX,
+      screenY
+    });
   }
 
   @bind
