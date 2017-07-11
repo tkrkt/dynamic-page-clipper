@@ -15,7 +15,7 @@
     "crx": "^3.2.1"
   },
   "scripts": {
-    "build": "webpack && crx pack package"
+    "build": "webpack && crx pack package -p key.pem"
   },
   "dependencies": {
     "decko": "^1.2.0",
