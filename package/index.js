@@ -3,7 +3,9 @@
 let connections = [];
 
 const inject = tab => {
-  if (!/^http/.test(tab.url)) return;
+  if (!tab.url.startsWith('http')) return;
+  if (tab.url.startsWith('https://chrome.google.com/webstore')) return;
+
   const connection = connections.find(c => c.target.tab.id === tab.id);
   if (connection) {
     chrome.windows.update(connection.clipper.window.id, {focused: true});
