@@ -129,16 +129,25 @@ let App = (_class = class App extends _preact.Component {
     };
   }
 
-  handleMouseDown({ clientX, clientY, screenX, screenY }) {
-    this.setState({
-      press: true,
-      startX: clientX,
-      startY: clientY,
-      currentX: clientX,
-      currentY: clientY,
-      screenX,
-      screenY
-    });
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleMouseDown({ clientX, clientY, screenX, screenY, buttons }) {
+    if (buttons === 1) {
+      this.setState({
+        press: true,
+        startX: clientX,
+        startY: clientY,
+        currentX: clientX,
+        currentY: clientY,
+        screenX,
+        screenY
+      });
+      document.addEventListener('keydown', this.handleKeyDown);
+    } else {
+      this.props.onCancel();
+    }
   }
 
   handleMouseMove({ clientX, clientY }) {
@@ -173,6 +182,13 @@ let App = (_class = class App extends _preact.Component {
           screenY
         });
       }
+    }
+  }
+
+  handleKeyDown({ keyCode }) {
+    if (keyCode === 27) {
+      // Escape
+      this.props.onCancel();
     }
   }
 
@@ -219,7 +235,7 @@ let App = (_class = class App extends _preact.Component {
         } })
     );
   }
-}, (_applyDecoratedDescriptor(_class.prototype, 'handleMouseDown', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'handleMouseDown'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'handleMouseMove', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'handleMouseMove'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'handleMouseUp', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'handleMouseUp'), _class.prototype)), _class);
+}, (_applyDecoratedDescriptor(_class.prototype, 'handleMouseDown', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'handleMouseDown'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'handleMouseMove', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'handleMouseMove'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'handleMouseUp', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'handleMouseUp'), _class.prototype), _applyDecoratedDescriptor(_class.prototype, 'handleKeyDown', [_decko.bind], Object.getOwnPropertyDescriptor(_class.prototype, 'handleKeyDown'), _class.prototype)), _class);
 
 
 let root;
@@ -236,7 +252,11 @@ const handleCapture = rect => {
   });
 };
 
-root = (0, _preact.render)((0, _preact.h)(App, { onCapture: handleCapture }), document.body);
+const handleCancel = () => {
+  (0, _preact.render)('', document.body, root);
+};
+
+root = (0, _preact.render)((0, _preact.h)(App, { onCapture: handleCapture, onCancel: handleCancel }), document.body);
 
 /***/ }),
 /* 1 */

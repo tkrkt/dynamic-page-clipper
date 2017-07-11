@@ -15,17 +15,26 @@ class App extends Component {
     };
   }
 
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyDown);
+  }
+
   @bind
-  handleMouseDown({clientX, clientY, screenX, screenY}) {
-    this.setState({
-      press: true,
-      startX: clientX,
-      startY: clientY,
-      currentX: clientX,
-      currentY: clientY,
-      screenX,
-      screenY
-    });
+  handleMouseDown({clientX, clientY, screenX, screenY, buttons}) {
+    if (buttons === 1) {
+      this.setState({
+        press: true,
+        startX: clientX,
+        startY: clientY,
+        currentX: clientX,
+        currentY: clientY,
+        screenX,
+        screenY
+      });
+      document.addEventListener('keydown', this.handleKeyDown);
+    } else {
+      this.props.onCancel();
+    }
   }
 
   @bind
@@ -62,6 +71,13 @@ class App extends Component {
           screenY
         });
       }
+    }
+  }
+
+  @bind
+  handleKeyDown({keyCode}) {
+    if (keyCode === 27) { // Escape
+      this.props.onCancel();
     }
   }
 
@@ -122,4 +138,8 @@ const handleCapture = rect => {
   });
 };
 
-root = render(<App onCapture={handleCapture} />, document.body);
+const handleCancel = () => {
+  render('', document.body, root);
+};
+
+root = render(<App onCapture={handleCapture} onCancel={handleCancel}/>, document.body);
