@@ -61,5 +61,23 @@ port.onMessage.addListener(({tab, rect, page}) => {
         });
       }
     });
+
+    // save button
+    document.querySelector('.save').addEventListener('click', () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const context = canvas.getContext('2d');
+      context.drawImage(
+        video,
+        rect.x * devPix, rect.y * devPix, rect.width * devPix, rect.height * devPix,
+        0, 0, canvas.width, canvas.height
+      );
+
+      const link = document.createElement('a');
+      link.setAttribute('href', canvas.toDataURL());
+      link.setAttribute('download', window.title + '.png');
+      link.click();
+    });
   });
 });

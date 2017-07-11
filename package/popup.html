@@ -13,10 +13,32 @@
     video {
       position: absolute;
     }
+    .save {
+      display: none;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: rgba(50, 50, 50, .5);
+      color: white;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .save:hover {
+      background-color: rgba(50, 50, 50, .7);
+    }
+    .save:active {
+      background-color: rgba(50, 50, 50, .8);
+    }
+    body:hover > .save {
+      display: block;
+    }
   </style>
 </head>
 <body>
 <video autoplay></video>
+<div class="save">Save Image</div>
 <script src="popup.js"></script>
 </body>
 </html>
