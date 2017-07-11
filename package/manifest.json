@@ -5,11 +5,15 @@
   "description": "",
   "author": "tkrkt",
   "background": {
-    "scripts": [ "index.js" ],
+    "scripts": [
+      "index.js"
+    ],
     "persistent": false
   },
   "browser_action": {
-
+  },
+  "icons": {
+    "128": "icon128.png"
   },
   "permissions": [
     "tabs",
