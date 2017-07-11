@@ -13,6 +13,7 @@ chrome.browserAction.onClicked.addListener(tab => {
 
 chrome.runtime.onMessage.addListener((message, {tab}) => {
   if (message.type === 'rect') {
+    const {rect, page} = message;
     target = {
       tab,
       rect: message.rect,
@@ -21,8 +22,10 @@ chrome.runtime.onMessage.addListener((message, {tab}) => {
     chrome.windows.create({
       url: chrome.extension.getURL('popup.html'),
       type: chrome.windows.WindowType.POPUP,
-      width: message.rect.width,
-      height: message.rect.height + 22, // title bar height
+      width: rect.width,
+      height: rect.height + 22, // title bar height
+      left: rect.screenX,
+      top: rect.screenY - 22,
       focused: false
     }, w => {
       const clipperTab = w.tabs[0];

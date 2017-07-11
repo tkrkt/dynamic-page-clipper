@@ -124,18 +124,22 @@ let App = (_class = class App extends _preact.Component {
       startX: 0,
       startY: 0,
       currentX: -10,
-      currentY: -10
+      currentY: -10,
+      screenX: 0,
+      screenY: 0
     };
   }
 
-  handleMouseDown({ clientX, clientY }) {
+  handleMouseDown({ clientX, clientY, screenX, screenY }) {
     if (!this.state.finished) {
       this.setState({
         press: true,
         startX: clientX,
         startY: clientY,
         currentX: clientX,
-        currentY: clientY
+        currentY: clientY,
+        screenX,
+        screenY
       });
     }
   }
@@ -149,7 +153,7 @@ let App = (_class = class App extends _preact.Component {
 
   handleMouseUp() {
     if (this.state.press) {
-      const { startX, startY, currentX, currentY } = this.state;
+      const { startX, startY, currentX, currentY, screenX, screenY } = this.state;
       const width = Math.abs(startX - currentX);
       const height = Math.abs(startY - currentY);
 
@@ -158,14 +162,18 @@ let App = (_class = class App extends _preact.Component {
           x: 0,
           y: 0,
           width: window.innerWidth,
-          height: window.innerHeight
+          height: window.innerHeight,
+          screenX: screenX - startX,
+          screenY: screenY - startY
         });
       } else {
         this.props.onCapture({
           x: Math.min(startX, currentX),
           y: Math.min(startY, currentY),
           width: Math.max(width, 100),
-          height: Math.max(height, 100)
+          height: Math.max(height, 100),
+          screenX,
+          screenY
         });
       }
     }
@@ -194,9 +202,7 @@ let App = (_class = class App extends _preact.Component {
           top: `${Math.min(startY, currentY)}px`,
           width: press ? `${Math.abs(startX - currentX)}px` : 0,
           height: press ? `${Math.abs(startY - currentY)}px` : 0,
-          outline: `${window.innerWidth + window.innerHeight}px solid rgba(50, 50, 50, .5)`,
-          border: press ? '2px solid white' : 'none',
-          boxSizing: 'border-box'
+          outline: `${window.innerWidth + window.innerHeight}px solid rgba(50, 50, 50, .5)`
         } }),
       !press && (0, _preact.h)('div', { style: {
           position: 'absolute',

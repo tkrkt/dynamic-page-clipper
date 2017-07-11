@@ -18,17 +18,18 @@ port.onMessage.addListener(({tab, rect, page}) => {
     video.width = page.width;
     video.height = page.height;
     Object.assign(video.style, {
-      transformOrigin: `${Math.floor(rect.x)}px ${Math.floor(rect.y)}px`,
-      transform: `translate(-${Math.floor(rect.x)}px, -${Math.floor(rect.y)}px)`
+      transformOrigin: `${rect.x}px ${rect.y}px`,
+      transform: `translate(-${rect.x}px, -${rect.y}px)`
     });
 
-    // fix window size
+    // fix window
     chrome.windows.getCurrent(w => {
       const marginWidth = w.width - window.innerWidth;
       const marginHeight = w.height - window.innerHeight;
       chrome.windows.update(w.id, {
         width: rect.width + marginWidth,
-        height: rect.height + marginHeight
+        height: rect.height + marginHeight,
+        focused: true
       });
     });
 
@@ -36,8 +37,8 @@ port.onMessage.addListener(({tab, rect, page}) => {
     window.addEventListener('resize', () => {
       const scale = Math.min(window.innerWidth / rect.width, window.innerHeight / rect.height);
       Object.assign(video.style, {
-        transformOrigin: `${Math.floor(rect.x)}px ${Math.floor(rect.y)}px`,
-        transform: `translate(-${Math.floor(rect.x)}px, -${Math.floor(rect.y)}px) scale(${scale})`
+        transformOrigin: `${rect.x}px ${rect.y}px`,
+        transform: `translate(-${rect.x}px, -${rect.y}px) scale(${scale})`
       });
     }, false);
 
