@@ -64,13 +64,14 @@ port.onMessage.addListener(({tab, rect, page}) => {
 
     // save button
     document.querySelector('.save').addEventListener('click', () => {
+      const scale = Math.min(window.innerWidth / rect.width, window.innerHeight / rect.height);
       const canvas = document.createElement('canvas');
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       const context = canvas.getContext('2d');
       context.drawImage(
         video,
-        rect.x * devPix, rect.y * devPix, canvas.width * devPix, canvas.height * devPix,
+        rect.x * devPix, rect.y * devPix, canvas.width * devPix / scale, canvas.height * devPix / scale,
         0, 0, canvas.width, canvas.height
       );
 
