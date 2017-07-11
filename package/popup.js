@@ -70,7 +70,7 @@ port.onMessage.addListener(({tab, rect, page}) => {
       const context = canvas.getContext('2d');
       context.drawImage(
         video,
-        rect.x * devPix, rect.y * devPix, rect.width * devPix, rect.height * devPix,
+        rect.x * devPix, rect.y * devPix, canvas.width * devPix, canvas.height * devPix,
         0, 0, canvas.width, canvas.height
       );
 
