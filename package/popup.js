@@ -74,7 +74,7 @@ port.onMessage.addListener(({tab, rect, page}) => {
         0, 0, canvas.width, canvas.height
       );
 
-      const filename = document.title.replace(/['":@,\.\{\}\|\*\$\/\\]/g, '').split(' ').join('_') + 'png';
+      const filename = document.title.replace(/['":@,\.\{\}\|\*\$\/\\]/g, '').split(' ').join('_') + '.png';
       const link = document.createElement('a');
       link.setAttribute('href', canvas.toDataURL());
       link.setAttribute('download', filename);
