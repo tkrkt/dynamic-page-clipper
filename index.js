@@ -3,6 +3,7 @@
 let connections = [];
 
 const inject = tab => {
+  if (!/^http/.test(tab.url)) return;
   const connection = connections.find(c => c.target.tab.id === tab.id);
   if (connection) {
     chrome.windows.update(connection.clipper.window.id, {focused: true});
