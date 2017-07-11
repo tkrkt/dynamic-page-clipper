@@ -11,10 +11,11 @@
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
-    "babel-preset-env": "^1.6.0"
+    "babel-preset-env": "^1.6.0",
+    "crx": "^3.2.1"
   },
   "scripts": {
-    "build": "webpack"
+    "build": "webpack && crx pack package"
   },
   "dependencies": {
     "decko": "^1.2.0",

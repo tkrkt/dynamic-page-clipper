@@ -1,6 +1,8 @@
+const path = require('path');
 module.exports = {
-  entry: './content.babel.jsx',
+  entry: path.join(__dirname, 'package', 'content.babel.jsx'),
   output: {
+    path: path.join(__dirname, 'package'),
     filename: 'content.js',
     libraryTarget: 'umd'
   },
