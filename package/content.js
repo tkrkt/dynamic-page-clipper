@@ -120,7 +120,6 @@ let App = (_class = class App extends _preact.Component {
     super();
     this.state = {
       press: false,
-      finished: false,
       startX: 0,
       startY: 0,
       currentX: -10,
@@ -131,17 +130,15 @@ let App = (_class = class App extends _preact.Component {
   }
 
   handleMouseDown({ clientX, clientY, screenX, screenY }) {
-    if (!this.state.finished) {
-      this.setState({
-        press: true,
-        startX: clientX,
-        startY: clientY,
-        currentX: clientX,
-        currentY: clientY,
-        screenX,
-        screenY
-      });
-    }
+    this.setState({
+      press: true,
+      startX: clientX,
+      startY: clientY,
+      currentX: clientX,
+      currentY: clientY,
+      screenX,
+      screenY
+    });
   }
 
   handleMouseMove({ clientX, clientY }) {
