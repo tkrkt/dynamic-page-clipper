@@ -2,12 +2,26 @@
 
 let connections = [];
 
-chrome.browserAction.onClicked.addListener(tab => {
+const inject = tab => {
   const connection = connections.find(c => c.target.tab.id === tab.id);
   if (connection) {
     chrome.windows.update(connection.clipper.window.id, {focused: true});
   } else {
     chrome.tabs.executeScript(tab.id, {file: 'content.js'});
+  }
+};
+
+chrome.browserAction.onClicked.addListener(inject);
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.contextMenus.create({
+    title: 'Clip page',
+    id: 'clip',
+    contexts: ['page']
+  });
+});
+chrome.contextMenus.onClicked.addListener(({menuItemId}, tab) => {
+  if (menuItemId === 'clip') {
+    inject(tab);
   }
 });
 
