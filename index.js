@@ -1,13 +1,17 @@
 /*global chrome*/
 
-let target = null;
+let connections = [];
 
 chrome.browserAction.onClicked.addListener(tab => {
-  if (target) return;
-  chrome.tabs.executeScript(tab.id, {file: 'content.js'});
+  const connection = connections.find(c => c.target.tab.id === tab.id);
+  if (connection) {
+    chrome.windows.update(connection.clipper.window.id, {focused: true});
+  } else {
+    chrome.tabs.executeScript(tab.id, {file: 'content.js'});
+  }
 });
 
-chrome.runtime.onMessage.addListener((message, {tab}, response) => {
+chrome.runtime.onMessage.addListener((message, {tab}) => {
   if (message.type === 'rect') {
     target = {
       tab,
@@ -17,12 +21,32 @@ chrome.runtime.onMessage.addListener((message, {tab}, response) => {
     chrome.windows.create({
       url: chrome.extension.getURL('popup.html'),
       type: chrome.windows.WindowType.POPUP,
-      width: 640,
-      height: 400,
+      width: message.rect.width,
+      height: message.rect.height + 22, // title bar height
       focused: false
+    }, w => {
+      const clipperTab = w.tabs[0];
+      connections.push({
+        clipper: {
+          tab: clipperTab,
+          window: w
+        },
+        target: {
+          tab,
+          rect: message.rect,
+          page: message.page
+        }
+      });
     });
-  } else if (message.type === 'ready') {
-    response(target);
-    target = null;
   }
+});
+
+chrome.runtime.onConnect.addListener(port => {
+  const senderTab = port.sender.tab;
+  const connection = connections.find(c => c.clipper.tab.id === senderTab.id);
+  if (!connection) return;
+  port.postMessage(connection.target);
+  port.onDisconnect.addListener(() => {
+    connections = connections.filter(c => c !== connection);
+  });
 });

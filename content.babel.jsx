@@ -9,8 +9,8 @@ class App extends Component {
       finished: false,
       startX: 0,
       startY: 0,
-      currentX: 0,
-      currentY: 0
+      currentX: -10,
+      currentY: -10
     };
   }
 
@@ -39,17 +39,29 @@ class App extends Component {
   handleMouseUp() {
     if (this.state.press) {
       const {startX, startY, currentX, currentY} = this.state;
-      this.props.onCapture({
-        x: Math.min(startX, currentX),
-        y: Math.min(startY, currentY),
-        width: Math.abs(startX - currentX),
-        height: Math.abs(startY - currentY)
-      });
+      const width = Math.abs(startX - currentX);
+      const height = Math.abs(startY - currentY);
+
+      if (width < 10 && height < 10) {
+        this.props.onCapture({
+          x: 0,
+          y: 0,
+          width: window.innerWidth,
+          height: window.innerHeight
+        });
+      } else {
+        this.props.onCapture({
+          x: Math.min(startX, currentX),
+          y: Math.min(startY, currentY),
+          width: Math.max(width, 100),
+          height: Math.max(height, 100)
+        });
+      }
     }
   }
 
   render() {
-    const {press, startX, startY, currentX, currentY, finished} = this.state;
+    const {press, startX, startY, currentX, currentY} = this.state;
     return <div
       style={{
         position: 'fixed',
@@ -63,30 +75,31 @@ class App extends Component {
       onMouseMove={this.handleMouseMove}
       onMouseUp={this.handleMouseUp}
     >
-      {!finished && <div style={{
+      <div style={{
+        position: 'absolute',
+        left: `${Math.min(startX, currentX)}px`,
+        top: `${Math.min(startY, currentY)}px`,
+        width: press ? `${Math.abs(startX - currentX)}px` : 0,
+        height: press ? `${Math.abs(startY - currentY)}px` : 0,
+        outline: `${window.innerWidth + window.innerHeight}px solid rgba(50, 50, 50, .5)`,
+        border: press ? '2px solid white' : 'none',
+        boxSizing: 'border-box'
+      }}/>
+      {!press && <div style={{
         position: 'absolute',
         left: `${currentX}px`,
         top: 0,
         width: '0px',
         height: '100%',
-        borderLeft: '1px dashed red'
+        borderLeft: '1px solid white'
       }}/>}
-      {!finished && <div style={{
+      {!press && <div style={{
         left: 0,
         top: `${currentY}px`,
         position: 'absolute',
         width: '100%',
         height: '0px',
-        borderTop: '1px dashed red'
-      }}/>}
-      {press && <div style={{
-        position: 'absolute',
-        left: `${Math.min(startX, currentX)}px`,
-        top: `${Math.min(startY, currentY)}px`,
-        width: `${Math.abs(startX - currentX)}px`,
-        height: `${Math.abs(startY - currentY)}px`,
-        border: '2px solid red',
-        boxSizing: 'border-box'
+        borderTop: '1px solid white'
       }}/>}
     </div>;
   }
