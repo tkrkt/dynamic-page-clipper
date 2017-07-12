@@ -12,10 +12,10 @@
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.6.0",
-    "crx": "^3.2.1"
+    "cross-zip-cli": "^1.0.0"
   },
   "scripts": {
-    "build": "webpack && crx pack package -p key.pem"
+    "build": "webpack && cross-zip package"
   },
   "dependencies": {
     "decko": "^1.2.0",
