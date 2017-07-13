@@ -37,7 +37,6 @@ port.onMessage.addListener(({tab, rect, page}) => {
     window.addEventListener('resize', () => {
       const scale = Math.min(window.innerWidth / rect.width, window.innerHeight / rect.height);
       Object.assign(video.style, {
-        transformOrigin: `${rect.x}px ${rect.y}px`,
         transform: `translate(-${rect.x}px, -${rect.y}px) scale(${scale})`
       });
     }, false);
@@ -80,6 +79,6 @@ port.onMessage.addListener(({tab, rect, page}) => {
       link.setAttribute('href', canvas.toDataURL());
       link.setAttribute('download', filename);
       link.click();
-    });
+    }, false);
   });
 });
