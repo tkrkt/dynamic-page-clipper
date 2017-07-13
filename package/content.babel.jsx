@@ -15,6 +15,10 @@ class App extends Component {
     };
   }
 
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyDown, true);
+  }
+
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyDown);
   }
@@ -31,7 +35,6 @@ class App extends Component {
         screenX,
         screenY
       });
-      document.addEventListener('keydown', this.handleKeyDown);
     } else {
       this.props.onCancel();
     }

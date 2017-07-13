@@ -129,6 +129,10 @@ let App = (_class = class App extends _preact.Component {
     };
   }
 
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyDown, true);
+  }
+
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyDown);
   }
@@ -144,7 +148,6 @@ let App = (_class = class App extends _preact.Component {
         screenX,
         screenY
       });
-      document.addEventListener('keydown', this.handleKeyDown);
     } else {
       this.props.onCancel();
     }
