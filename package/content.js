@@ -139,15 +139,17 @@ let App = (_class = class App extends _preact.Component {
 
   handleMouseDown({ clientX, clientY, screenX, screenY, buttons }) {
     if (buttons === 1) {
-      this.setState({
-        press: true,
-        startX: clientX,
-        startY: clientY,
-        currentX: clientX,
-        currentY: clientY,
-        screenX,
-        screenY
-      });
+      if (!this.state.press) {
+        this.setState({
+          press: true,
+          startX: clientX,
+          startY: clientY,
+          currentX: clientX,
+          currentY: clientY,
+          screenX,
+          screenY
+        });
+      }
     } else {
       this.props.onCancel();
     }
